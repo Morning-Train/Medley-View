@@ -1,0 +1,38 @@
+{
+    "name": "morningmedley/view",
+    "description": "Blade",
+    "keywords": [
+        "wordpress",
+        "morningtrain",
+        "view",
+        "medley",
+        "morningmedley"
+    ],
+    "minimum-stability": "stable",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Mathias Munk",
+            "email": "mh@morningtrain.dk"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "MorningMedley\\View\\": "src/"
+        }
+    },
+    "require": {
+        "php": "^8.0",
+        "illuminate/container": "^8|^9",
+        "illuminate/support": "^8|^9",
+        "illuminate/view": "^8|^9",
+        "symfony/finder": "^v6.3"
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "MorningMedley\\View\\ServiceProvider"
+            ]
+        }
+    }
+}
