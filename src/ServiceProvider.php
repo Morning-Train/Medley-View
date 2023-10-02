@@ -2,11 +2,8 @@
 
 namespace MorningMedley\View;
 
-use Illuminate\Contracts\Support\Arrayable;
-use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider as IlluminateServiceProvider;
 use Illuminate\View\ViewServiceProvider;
-use Symfony\Component\Finder\Finder;
 
 class ServiceProvider extends IlluminateServiceProvider
 {
@@ -14,14 +11,14 @@ class ServiceProvider extends IlluminateServiceProvider
     {
         $this->mergeConfigFrom(__DIR__ . "/config/config.php", 'view');
         $this->app->register(ViewServiceProvider::class);
-        
+
         require_once __DIR__ . "/globals.php";
     }
 
     public function boot(): void
     {
         $this->app->get('config')
-            ->set('view.paths', $this->resolveRelativePaths($this->app->get('config')->get('view.paths')));
+            ->set('view.paths', $this->resolveRelativePaths((array)$this->app->get('config')->get('view.paths')));
         $this->app->get('config')
             ->set('view.compiled',
                 $this->resolveRelativePaths((array) $this->app->get('config')->get('view.compiled'))[0]);
