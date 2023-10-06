@@ -2,8 +2,10 @@
 
 namespace MorningMedley\View;
 
+use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider as IlluminateServiceProvider;
 use Illuminate\View\ViewServiceProvider;
+use MorningMedley\View\Classes\Directives;
 
 class ServiceProvider extends IlluminateServiceProvider
 {
@@ -18,10 +20,12 @@ class ServiceProvider extends IlluminateServiceProvider
     public function boot(): void
     {
         $this->app->get('config')
-            ->set('view.paths', $this->resolveRelativePaths((array)$this->app->get('config')->get('view.paths')));
+            ->set('view.paths', $this->resolveRelativePaths((array) $this->app->get('config')->get('view.paths')));
         $this->app->get('config')
             ->set('view.compiled',
                 $this->resolveRelativePaths((array) $this->app->get('config')->get('view.compiled'))[0]);
+
+        $this->app->make(Directives::class)->registerDirectives();
     }
 
     public function resolveRelativePaths(array $paths): array
