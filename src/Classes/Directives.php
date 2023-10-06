@@ -12,6 +12,9 @@ class Directives
         Blade::directive('script', [$this, 'script']);
         Blade::directive('style', [$this, 'style']);
         Blade::directive('shortcode', [$this, 'shortcode']);
+
+        Blade::if('auth', [$this, 'wpauth']);
+
     }
 
     /**
@@ -50,5 +53,10 @@ class Directives
     public function shortcode(string $expression): string
     {
         return "<?php echo \do_shortcode({$expression}); ?>";
+    }
+
+    public function wpauth(?string $expression = null): bool
+    {
+        return $expression === null ? \is_user_logged_in() : \current_user_can($expression);
     }
 }
