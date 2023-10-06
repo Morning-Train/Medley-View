@@ -9,8 +9,8 @@ class Directives
 {
     public function registerDirectives()
     {
-        Blade::directive('script', [$this, 'script']);
-        Blade::directive('style', [$this, 'style']);
+        Blade::directive('enqueueScript', [$this, 'script']);
+        Blade::directive('enqueueStyle', [$this, 'style']);
         Blade::directive('shortcode', [$this, 'shortcode']);
 
         Blade::if('auth', [$this, 'wpauth']);
