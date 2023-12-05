@@ -13,8 +13,6 @@ class ServiceProvider extends IlluminateServiceProvider
     {
         $this->mergeConfigFrom(__DIR__ . "/config/config.php", 'view');
         $this->app->register(ViewServiceProvider::class);
-
-        require_once __DIR__ . "/globals.php";
     }
 
     public function boot(): void
@@ -24,7 +22,8 @@ class ServiceProvider extends IlluminateServiceProvider
         $cacheDir = $this->app->make('config')->get('view.compiled');
         if (empty($cacheDir)) {
             $cacheDir = method_exists($this->app,
-                'getCachedConfigPath') ? $this->app->joinPaths($this->app->getCachedConfigPath(), 'views') : $this->app->basePath('_cache/views');
+                'getCachedConfigPath') ? $this->app->joinPaths($this->app->getCachedConfigPath(),
+                'views') : $this->app->basePath('_cache/views');
         } else {
             $cacheDir = $this->app->basePath($cacheDir);
         }
