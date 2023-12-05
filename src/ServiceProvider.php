@@ -19,11 +19,18 @@ class ServiceProvider extends IlluminateServiceProvider
 
     public function boot(): void
     {
-        $this->app->get('config')
+        $this->app->make('config')
             ->set('view.paths', $this->resolveRelativePaths((array) $this->app->get('config')->get('view.paths')));
+        $cacheDir = $this->app->make('config')->get('view.compiled');
+        if (empty($cacheDir)) {
+            $cacheDir = method_exists($this->app,
+                'getCachedConfigPath') ? $this->app->joinPaths($this->app->getCachedConfigPath(), 'views') : $this->app->basePath('_cache/views');
+        } else {
+            $cacheDir = $this->app->basePath($cacheDir);
+        }
+
         $this->app->get('config')
-            ->set('view.compiled',
-                $this->resolveRelativePaths((array) $this->app->get('config')->get('view.compiled'))[0]);
+            ->set('view.compiled', $cacheDir);
 
         $this->app->make(Directives::class)->registerDirectives();
     }
