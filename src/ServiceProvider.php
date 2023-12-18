@@ -31,11 +31,17 @@ class ServiceProvider extends IlluminateServiceProvider
         $this->app->get('config')
             ->set('view.compiled', $cacheDir);
 
+        if($namespaces = $this->app->make('config')->get('view.namespaces')){
+            foreach ((array)$namespaces as $namespace){
+                $this->app->make('view')->addNamespace(...$namespace);
+            }
+        }
+
         $this->app->make(Directives::class)->registerDirectives();
     }
 
     public function resolveRelativePaths(array $paths): array
     {
-        return array_map(fn($path) => $this->app->basePath($path), $paths);
+        return array_map(fn($path) => is_dir($path) ? $path : $this->app->basePath($path), $paths);
     }
 }
