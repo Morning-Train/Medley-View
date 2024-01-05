@@ -1,14 +1,11 @@
 {
     "name": "morningmedley/view",
-    "description": "Blade",
+    "description": "Illuminate View for Morningmedley.",
     "keywords": [
         "wordpress",
-        "morningtrain",
-        "view",
-        "medley",
-        "morningmedley"
+        "morningmedley",
+        "view"
     ],
-    "minimum-stability": "stable",
     "license": "MIT",
     "authors": [
         {
@@ -26,10 +23,10 @@
         "illuminate/container": "^9|^10",
         "illuminate/support": "^9|^10",
         "illuminate/view": "^9|^10",
-        "symfony/finder": "^v6.3"
+        "symfony/finder": "^v6.4"
     },
     "extra": {
-        "laravel": {
+        "morningmedley": {
             "providers": [
                 "MorningMedley\\View\\ServiceProvider"
             ]
