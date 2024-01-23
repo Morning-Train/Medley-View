@@ -5,6 +5,7 @@ namespace MorningMedley\View;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider as IlluminateServiceProvider;
 use Illuminate\View\ViewServiceProvider;
+use MorningMedley\View\Classes\Cli;
 use MorningMedley\View\Classes\Directives;
 
 class ServiceProvider extends IlluminateServiceProvider
@@ -13,6 +14,9 @@ class ServiceProvider extends IlluminateServiceProvider
     {
         $this->mergeConfigFrom(__DIR__ . "/config/config.php", 'view');
         $this->app->register(ViewServiceProvider::class);
+        if (class_exists('\WP_CLI')) {
+            $this->app->make(Cli::class);
+        }
     }
 
     public function boot(): void
