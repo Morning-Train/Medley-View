@@ -2,20 +2,18 @@
 
 namespace MorningMedley\View\Classes;
 
-use Illuminate\Support\Facades\Blade;
-use Illuminate\View\View;
+use Illuminate\View\Compilers\BladeCompiler;
 
 class Directives
 {
-    public function registerDirectives()
+    public function registerDirectives(BladeCompiler $compiler)
     {
-        Blade::directive('enqueueScript', [$this, 'script']);
-        Blade::directive('enqueueStyle', [$this, 'style']);
-        Blade::directive('shortcode', [$this, 'shortcode']);
-        Blade::directive('cache', [$this, 'cache']);
-        Blade::directive('endcache', [$this, 'endcache']);
-        Blade::if('auth', [$this, 'wpauth']);
-
+        $compiler->directive('enqueueScript', [$this, 'script']);
+        $compiler->directive('enqueueStyle', [$this, 'style']);
+        $compiler->directive('shortcode', [$this, 'shortcode']);
+        $compiler->directive('cache', [$this, 'cache']);
+        $compiler->directive('endcache', [$this, 'endcache']);
+        $compiler->if('auth', [$this, 'wpauth']);
     }
 
     /**

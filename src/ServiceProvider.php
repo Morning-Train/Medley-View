@@ -14,6 +14,10 @@ class ServiceProvider extends IlluminateServiceProvider
     {
         $this->mergeConfigFrom(__DIR__ . "/config/config.php", 'view');
         $this->app->register(ViewServiceProvider::class);
+
+        \Illuminate\Support\Facades\Blade::setFacadeApplication($this->app);
+        \Illuminate\Support\Facades\View::setFacadeApplication($this->app);
+        
         if (class_exists('\WP_CLI')) {
             $this->app->make(Cli::class);
         }
@@ -35,13 +39,13 @@ class ServiceProvider extends IlluminateServiceProvider
         $this->app->get('config')
             ->set('view.compiled', $cacheDir);
 
-        if($namespaces = $this->app->make('config')->get('view.namespaces')){
-            foreach ((array)$namespaces as $namespace){
+        if ($namespaces = $this->app->make('config')->get('view.namespaces')) {
+            foreach ((array) $namespaces as $namespace) {
                 $this->app->make('view')->addNamespace(...$namespace);
             }
         }
 
-        $this->app->make(Directives::class)->registerDirectives();
+        $this->app->make(Directives::class)->registerDirectives($this->app->make('blade.compiler'));
     }
 
     public function resolveRelativePaths(array $paths): array
