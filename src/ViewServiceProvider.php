@@ -24,10 +24,6 @@ class ViewServiceProvider extends \Illuminate\View\ViewServiceProvider
         \Illuminate\Support\Facades\Blade::setFacadeApplication($this->app);
         \Illuminate\Support\Facades\View::setFacadeApplication($this->app);
 
-        if (class_exists('\WP_CLI')) {
-            $this->app->make(Cli::class);
-        }
-
         $this->commands(
             ViewMakeCommand::class,
             ViewCacheCommand::class,
