@@ -4,41 +4,40 @@ namespace MorningMedley\View;
 
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider as IlluminateServiceProvider;
-use Illuminate\View\ViewServiceProvider;
 use MorningMedley\View\Classes\Cli;
 use MorningMedley\View\Classes\Directives;
+use MorningMedley\View\Console\ViewCacheCommand;
+use MorningMedley\View\Console\ViewClearCommand;
+use MorningMedley\View\Console\ViewMakeCommand;
 
-class ServiceProvider extends IlluminateServiceProvider
+class ViewServiceProvider extends \Illuminate\View\ViewServiceProvider
 {
     public function register(): void
     {
+        parent::register();
+
+        $this->app->alias('view', \Illuminate\View\Factory::class);
+        $this->app->alias('view', \Illuminate\Contracts\View\Factory::class);
+
         $this->mergeConfigFrom(__DIR__ . "/config/config.php", 'view');
-        $this->app->register(ViewServiceProvider::class);
 
         \Illuminate\Support\Facades\Blade::setFacadeApplication($this->app);
         \Illuminate\Support\Facades\View::setFacadeApplication($this->app);
-        
+
         if (class_exists('\WP_CLI')) {
             $this->app->make(Cli::class);
         }
+
+        $this->commands(
+            ViewMakeCommand::class,
+            ViewCacheCommand::class,
+            ViewClearCommand::class,
+        );
     }
 
     public function boot(): void
     {
-        $this->app->make('config')
-            ->set('view.paths', $this->resolveRelativePaths((array) $this->app->get('config')->get('view.paths')));
-        $cacheDir = $this->app->make('config')->get('view.compiled');
-        if (empty($cacheDir)) {
-            $cacheDir = method_exists($this->app,
-                'getCachedConfigPath') ? $this->app->joinPaths($this->app->getCachedConfigPath(),
-                'views') : $this->app->basePath('_cache/views');
-        } else {
-            $cacheDir = $this->app->basePath($cacheDir);
-        }
-
-        $this->app->get('config')
-            ->set('view.compiled', $cacheDir);
-
+        //        if(!is_dir())
         if ($namespaces = $this->app->make('config')->get('view.namespaces')) {
             foreach ((array) $namespaces as $namespace) {
                 $this->app->make('view')->addNamespace(...$namespace);
@@ -46,10 +45,5 @@ class ServiceProvider extends IlluminateServiceProvider
         }
 
         $this->app->make(Directives::class)->registerDirectives($this->app->make('blade.compiler'));
-    }
-
-    public function resolveRelativePaths(array $paths): array
-    {
-        return array_map(fn($path) => is_dir($path) ? $path : $this->app->basePath($path), $paths);
     }
 }
