@@ -19,11 +19,11 @@
         }
     },
     "require": {
-        "php": "^8.0",
-        "illuminate/container": "^9|^10",
-        "illuminate/support": "^9|^10",
-        "illuminate/view": "^9|^10",
-        "symfony/finder": "^v6"
+        "php": "^8.2",
+        "illuminate/container": "^11.23",
+        "illuminate/support": "^11.23",
+        "illuminate/view": "^11.23",
+        "symfony/finder": "^v7"
     },
     "extra": {
         "morningmedley": {
